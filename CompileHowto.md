@@ -4,7 +4,7 @@ If you are using [Docker](https://www.docker.com/), you can compile Hyperion ins
 The compiled binaries and packages will be available at the deploy folder next to the script.<br/>
 Note: call the script with `./docker-compile.sh -h` for more options
 
-## Native compiling on Raspberry Pi
+## Native compilation on Raspberry Pi
 
 **Raspbian Stretch**
 ```
@@ -15,31 +15,19 @@ wget -qN https://raw.github.com/hyperion-project/hyperion.ng/master/bin/scripts/
 wget -qN https://raw.github.com/hyperion-project/hyperion.ng/master/bin/scripts/docker-compile.sh && chmod +x *.sh && ./docker-compile.sh -t rpi-raspbian-buster
 ```
 
-## Cross compiling on X64_86 for:
+## Cross compilation on x86_64 for:
 
-**X64:**
+**x86_64:**
 ```
 wget -qN https://raw.github.com/hyperion-project/hyperion.ng/master/bin/scripts/docker-compile.sh && chmod +x *.sh && ./docker-compile.sh
 ```
-**i386:**
+**Raspberry Pi v1 & ZERO**
 ```
-wget -qN https://raw.github.com/hyperion-project/hyperion.ng/master/bin/scripts/docker-compile.sh && chmod +x *.sh && ./docker-compile.sh -t i386
+wget -qN https://raw.github.com/hyperion-project/hyperion.ng/master/bin/scripts/docker-compile.sh && chmod +x *.sh && ./docker-compile.sh -t armv6l
 ```
-**Raspberry Pi v1 & ZERO (Raspbian Stretch)**
+**Raspberry Pi 2/3/4**
 ```
-wget -qN https://raw.github.com/hyperion-project/hyperion.ng/master/bin/scripts/docker-compile.sh && chmod +x *.sh && ./docker-compile.sh -t armv6hf
-```
-**Raspberry Pi 2 & 3 (Raspbian Stretch)**
-```
-wget -qN https://raw.github.com/hyperion-project/hyperion.ng/master/bin/scripts/docker-compile.sh && chmod +x *.sh && ./docker-compile.sh -t armv7hf
-```
-**Raspberry Pi v1 & ZERO (Raspbian Buster)**
-```
-wget -qN https://raw.github.com/hyperion-project/hyperion.ng/master/bin/scripts/docker-compile.sh && chmod +x *.sh && ./docker-compile.sh -t armv6hf-buster
-```
-**Raspberry Pi 2 & 3 (Raspbian Buster**
-```
-wget -qN https://raw.github.com/hyperion-project/hyperion.ng/master/bin/scripts/docker-compile.sh && chmod +x *.sh && ./docker-compile.sh -t armv7hf-buster
+wget -qN https://raw.github.com/hyperion-project/hyperion.ng/master/bin/scripts/docker-compile.sh && chmod +x *.sh && ./docker-compile.sh -t armv7l
 ```
 
 # The usual way

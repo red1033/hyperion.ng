@@ -3,10 +3,12 @@
 DOCKER="docker"
 # Git repo url of Hyperion
 GIT_REPO_URL="https://github.com/hyperion-project/hyperion.ng.git"
+# GitHub Container Registry url
+REGISTRY_URL="ghcr.io/hyperion-project/hyperion.ng"
 # cmake build type
 BUILD_TYPE="Release"
-# the image tag at hyperionproject/hyperion-ci
-BUILD_TARGET="amd64"
+# the docker image tag at GitHub Container Registry
+BUILD_TARGET="x86_64"
 # build packages (.deb .zip ...)
 BUILD_PACKAGES=true
 # packages string inserted to cmake cmd
@@ -42,8 +44,8 @@ function printHelp {
 echo "########################################################
 ## A script to compile Hyperion inside a docker container
 ## Requires installed Docker: https://www.docker.com/
-## Without arguments it will compile Hyperion for Debain Stretch (x64) or higher.
-## Supports Raspberry Pi (armv6hf, armv7hf) cross compilation (Debian Stretch/Buster) and native compilation (Raspbian Stretch/Buster)
+## Without arguments it will compile Hyperion for Debain Stretch (x86_64) or higher.
+## Supports Raspberry Pi (armv6l, armv7l) cross compilation (Debian Stretch) and native compilation (Raspbian Stretch/Buster)
 ##
 ## Homepage: https://www.hyperion-project.org
 ## Forum: https://forum.hyperion-project.org
@@ -51,10 +53,10 @@ echo "########################################################
 # These are possible arguments to modify the script behaviour with their default values
 #
 # docker-compile.sh -h	            # Show this help message
-# docker-compile.sh -t amd64        # The docker tag, one of amd64 | i386 | armv6hf | armv7hf | armv6hf-buster | armv7hf-buster | rpi-raspbian-stretch | rpi-raspbian-buster
+# docker-compile.sh -t x86_64       # The docker tag, one of x86_64 | armv6l | armv7l | rpi-raspbian-stretch | rpi-raspbian-buster
 # docker-compile.sh -b Release      # cmake Release or Debug build
 # docker-compile.sh -p true         # If true build packages with CPack
-# More informations to docker tags at: https://hub.docker.com/r/hyperionproject/hyperion-ci/"
+# More informations to docker tags at: https://github.com/Hyperion-Project/hyperion.docker-ci"
 }
 
 while getopts t:b:p:h option
@@ -84,18 +86,20 @@ echo "---> Downloading Hyperion source code from ${GIT_REPO_URL}"
 sudo rm -fr $SCRIPT_PATH/hyperion >/dev/null 2>&1
 git clone --recursive --depth 1 -q $GIT_REPO_URL $SCRIPT_PATH/hyperion || { echo "---> Failed to download Hyperion source code! Abort"; exit 1; }
 
-# start compilation
+# Steps:
+# Update lokal docker image
 # Remove container after stop
 # Mount /deploy to /deploy
 # Mount source dir to /source
-# Target docker image
+# Use target docker image
 # execute inside container all commands on bash
+
 echo "---> Startup docker..."
-$DOCKER pull hyperionproject/hyperion-ci:$BUILD_TARGET
+$DOCKER pull $REGISTRY_URL:$BUILD_TARGET
 $DOCKER run --rm \
 	-v "${SCRIPT_PATH}/deploy:/deploy" \
 	-v "${SCRIPT_PATH}/hyperion:/source:ro" \
-	hyperionproject/hyperion-ci:$BUILD_TARGET \
+	$REGISTRY_URL:$BUILD_TARGET \
 	/bin/bash -c "mkdir hyperion && cp -r /source/. /hyperion &&
 	cd /hyperion && mkdir build && cd build &&
 	cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} .. || exit 2 &&

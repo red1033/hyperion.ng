@@ -10,16 +10,16 @@ jobs:
     vmImage: 'ubuntu-16.04'
   strategy:
     matrix:
-      AMD64 (x64):
-        dockerTag: 'amd64'
-        dockerName: 'Debian Stretch (AMD64)'
+      x86_64:
+        dockerTag: 'x86_64'
+        dockerName: 'Debian Stretch (x86_64)'
         platform: 'x11'
       ARMv6hf (Raspberry Pi v1 & ZERO):
-        dockerTag: 'armv6hf'
+        dockerTag: 'armv6l'
         dockerName: 'Debian Stretch (Raspberry Pi v1 & ZERO)'
         platform: 'rpi'
       ARMv7hf (Raspberry Pi 2 & 3):
-        dockerTag: 'armv7hf'
+        dockerTag: 'armv7l'
         dockerName: 'Debian Stretch (Raspberry Pi 2 & 3)'
         platform: 'rpi'
       ARMv8 (Generic AARCH64):
